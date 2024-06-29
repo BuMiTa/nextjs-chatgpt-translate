@@ -2,29 +2,50 @@
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 
 export const generateDocx = async (originalText, translatedText) => {
-    const originalParagraphs = originalText.split('\n').map(line => new Paragraph({
-        children: [
-            new TextRun({
-                text: line,
-                color: "FF0000", // Red color in hex
-            }),
-        ],
-    }));
+    const splitSentences = (text) => text.split(/(?<=[.\n!?])\s*/);
 
-    const translatedParagraphs = translatedText.split('\n').map(line => new Paragraph({
-        children: [
-            new TextRun({
-                text: line,
-                color: "00FF00", // Green color in hex
-            }),
-        ],
-    }));
+    const originalSentences = splitSentences(originalText);
+    const translatedSentences = splitSentences(translatedText);
+
+    const paragraphs = translatedSentences.flatMap((translatedSentence, index) => {
+        const originalSentence = originalSentences[index] ? `${originalSentences[index]}` : null;
+
+        if (translatedSentence && originalSentence) {
+            return [
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: originalSentence,
+                            color: "000000", // Black color for original text
+                        }),
+                    ],
+                }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: `(${translatedSentence})`,
+                            color: "FF0000", // Red color for translated text
+                        }),
+                    ],
+                }),
+                new Paragraph({ // Empty paragraph to add a line break
+                    children: [
+                        new TextRun({
+                            text: '',
+                        }),
+                    ],
+                }),
+            ];
+        }
+
+        return [];
+    });
 
     const doc = new Document({
         sections: [
             {
                 properties: {},
-                children: [...originalParagraphs, ...translatedParagraphs],
+                children: paragraphs,
             },
         ],
     });

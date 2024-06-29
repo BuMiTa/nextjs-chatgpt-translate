@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 import React, { useState } from 'react';
 import { generateDocx } from '../utils/generateDocx'; // Adjust the import path as necessary
@@ -47,13 +46,13 @@ export default function Home() {
                       'Content-Type': 'application/json'
                     },
                     method: 'POST',
-                    body: JSON.stringify({text: data.text}),
+                    body: JSON.stringify({ text: data.text }),
                 });
                 const translateData = await translateResponse.json();
                 if (translateResponse.ok) {
                     setTranslatedText(translateData.translation);
 
-                    // Generate the .docx file with both original and translated texts
+                    // Generate the .docx file with translated and original lines
                     const docxBlob = await generateDocx(data.text, translateData.translation);
                     const url = window.URL.createObjectURL(docxBlob);
                     const link = document.createElement("a");
@@ -78,9 +77,9 @@ export default function Home() {
 
     return (
         <div>
-            <h1>Upload PDF and Extract Text</h1>
+            <h1>Upload PDF, DOC, or DOCX and Extract Text</h1>
             <form onSubmit={handleSubmit}>
-                <input type="file" accept="application/pdf" onChange={handleFileChange} />
+                <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
                 <br />
                 <button type="submit" disabled={loading}>
                     {loading ? 'Uploading...' : 'Upload and Extract'}

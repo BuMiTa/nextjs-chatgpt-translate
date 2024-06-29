@@ -22,8 +22,8 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'anthropic/claude-3-haiku', 
-                prompt: `Translate the following text to Vietnamese and don't add or output anything else: ${text}`
+                model: 'google/gemini-flash-1.5', 
+                prompt: `Translate all of the content to Vietnamese, don't output anything else.: ${text}`
             })
         });
 
