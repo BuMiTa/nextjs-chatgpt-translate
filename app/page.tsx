@@ -53,7 +53,7 @@ export default function Home() {
                     setTranslatedText(translateData.translation);
 
                     // Generate the .docx file with translated and original lines
-                    const docxBlob = await generateDocx(data.text, translateData.translation);
+                    const docxBlob = await generateDocx(translateData.split, translateData.translation);
                     const url = window.URL.createObjectURL(docxBlob);
                     const link = document.createElement("a");
                     link.href = url;

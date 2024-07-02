@@ -2,7 +2,7 @@
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 
 export const generateDocx = async (originalText, translatedText) => {
-    const splitSentences = (text) => text.split(/(?<=[.\n!?])\s*/);
+    const splitSentences = (text) => text.split("\n");
 
     const originalSentences = splitSentences(originalText);
     const translatedSentences = splitSentences(translatedText);
