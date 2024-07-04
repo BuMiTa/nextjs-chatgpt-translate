@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 model: 'openai/gpt-4o', 
-                prompt: `Print the text as if every sentence are a paragraph: ${text}`
+                prompt: `Print this text and don't print endline if there isn't a new paragraph in the text part, don't output anything else: ${text}`
             })
         });
 
@@ -35,6 +35,7 @@ export default async function handler(req, res) {
 
         const splitData = await splitResponse.json();
         const split = splitData.choices[0].text.trim();
+        console.log(split)
 
         const response = await fetch(url, {
             method: 'POST',
@@ -43,8 +44,8 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'google/gemini-flash-1.5', 
-                prompt: `Translate all of the content to Vietnamese, don't output anything else.: ${split}`
+                model: 'openai/gpt-4o', 
+                prompt: `Translate the content to Vietnamese.: ${split}`
             })
         });
 
