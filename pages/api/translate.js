@@ -15,6 +15,27 @@ export default async function handler(req, res) {
     const url = 'https://openrouter.ai/api/v1/chat/completions';
 
     try {
+        const splitResponse = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'openai/gpt-4o', 
+                prompt: `Print the text as if every sentence are a paragraph: ${text}`
+            })
+        });
+
+        if (!splitResponse.ok) {
+            const errorData = await splitResponse.json();
+            return res.status(splitResponse.status).json({ error: errorData.error });
+        }
+        
+
+        const splitData = await splitResponse.json();
+        const split = splitData.choices[0].text.trim();
+
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -23,7 +44,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 model: 'google/gemini-flash-1.5', 
-                prompt: `Translate all of the content to Vietnamese, don't output anything else.: ${text}`
+                prompt: `Translate all of the content to Vietnamese, don't output anything else.: ${split}`
             })
         });
 
@@ -34,7 +55,7 @@ export default async function handler(req, res) {
 
         const data = await response.json();
         const translation = data.choices[0].text.trim();
-        res.status(200).json({ translation });
+        res.status(200).json({ split, translation });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', reason: error });
     }
