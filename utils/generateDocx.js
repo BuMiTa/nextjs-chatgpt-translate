@@ -23,7 +23,7 @@ export const generateDocx = async (originalText, translatedText) => {
                 new Paragraph({
                     children: [
                         new TextRun({
-                            text: `(${translatedSentence})`,
+                            text: translatedSentence,
                             color: "FF0000", // Red color for translated text
                         }),
                     ],
