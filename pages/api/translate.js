@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 model: 'openai/gpt-4o', 
-                prompt: `Print this text and don't print endline if there isn't a new paragraph in the text part, don't output anything else: ${text}`
+                prompt: `print this text and remove any line break if they are in the middle of the sentence: ${text}`
             })
         });
 
