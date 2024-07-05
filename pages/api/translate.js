@@ -22,18 +22,19 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'openai/gpt-4o', 
-                prompt: `print this text, remove any line break if they are in the middle of the sentence, split each and every sentence using line break: ${text}`
+                model: 'anthropic/claude-3-haiku',
+                prompt: `print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) and split each and every sentence (or the title) using line break: ${text}`
             })
         });
 
         if (!splitResponse.ok) {
             const errorData = await splitResponse.json();
-            return res.status(splitResponse.status).json({ error: errorData.error });
+            return res.status(errorData.error.code).json({ error: errorData.error.message });
         }
         
 
         const splitData = await splitResponse.json();
+        console.log(splitData);
         const split = splitData.choices[0].text.trim();
         console.log(split)
 
@@ -44,17 +45,18 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'openai/gpt-4o', 
+                model: 'anthropic/claude-3-haiku', 
                 prompt: `Translate the content to Vietnamese.: ${split}`
             })
         });
 
         if (!response.ok) {
             const errorData = await response.json();
-            return res.status(response.status).json({ error: errorData.error });
+            return res.status(errorData.error.code).json({ error: errorData.error.message });
         }
 
         const data = await response.json();
+        console.log(data);
         const translation = data.choices[0].text.trim();
         res.status(200).json({ split, translation });
     } catch (error) {
