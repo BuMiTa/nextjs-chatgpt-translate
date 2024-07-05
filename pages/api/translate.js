@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             },
             body: JSON.stringify({
                 model: 'openai/gpt-4o', 
-                prompt: `print this text and remove any line break if they are in the middle of the sentence: ${text}`
+                prompt: `print this text, remove any line break if they are in the middle of the sentence, split each and every sentence using line break: ${text}`
             })
         });
 
