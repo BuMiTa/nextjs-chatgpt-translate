@@ -22,8 +22,8 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'anthropic/claude-3-haiku',
-                prompt: `print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) and split each and every sentence (or the title) using line break: ${text}`
+                model: 'google/gemini-flash-1.5',
+                prompt: `Print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) (do this first) and then split each and every sentence (or the title, regardless of context or if it's too short) using line break. PLEASE SPLIT THE SENTENCE CORRECTLY BASED ON GRAMMAR RULE OR I'M GOING TO KILL MYSELF. DON'T OUTPUT ANYTHING ELSE.: ${text}`
             })
         });
 
@@ -45,8 +45,8 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'anthropic/claude-3-haiku', 
-                prompt: `Translate the content to Vietnamese.: ${split}`
+                model: 'google/gemini-flash-1.5', 
+                prompt: `Translate the content to Vietnamese. DON'T OUTPUT ANYTHING ELSE.: ${split}`
             })
         });
 
