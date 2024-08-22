@@ -22,9 +22,9 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'google/gemini-flash-1.5',
+                model: 'openai/gpt-4o-mini',
                 // prompt: `Print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) (do this first) and then split each and every sentence (or the title, regardless of context or if it's too short) using line break. PLEASE SPLIT THE SENTENCE CORRECTLY BASED ON GRAMMAR RULE OR I'M GOING TO KILL MYSELF. DON'T OUTPUT ANYTHING ELSE.: ${text}`
-                prompt: `Print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) but keep the line break between the paragraphs. PLEASE SPLIT THE PARAGRAPH CORRECTLY BASED ON GRAMMAR RULE OR I'M GOING TO KILL MYSELF. DON'T OUTPUT ANYTHING ELSE.: ${text}`
+                prompt: `Print all of this text with the following requirement: remove any line break if they are in the middle of the sentence (regardless of the context) but keep the line break between paragraphs. PLEASE SPLIT THE PARAGRAPH CORRECTLY BASED ON GRAMMAR RULE. DON'T OUTPUT ANYTHING ELSE.: ${text}`
             })
         });
 
@@ -46,8 +46,8 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'google/gemini-flash-1.5', 
-                prompt: `Translate the content to Vietnamese. DON'T OUTPUT ANYTHING ELSE.: ${split}`
+                model: 'openai/gpt-4o-mini', 
+                prompt: `Translate the content to Vietnamese and keep the format of this text. DON'T OUTPUT ANYTHING ELSE.: ${split}`
             })
         });
 
